@@ -10,8 +10,7 @@ Welcome to QR-Project – our innovative open-source endeavor designed to stream
    - [Installation](#installation)
 2. [Tech Stack](#tech-stack)
 3. [Contributing](#contributing)
-4. [License](#license)
-5. [Acknowledgements](#acknowledgements)
+4. [Acknowledgements](#acknowledgements)
 
 ## Getting Started
 
