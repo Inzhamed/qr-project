@@ -21,6 +21,9 @@ app.use("/user", userRouter);
 app.use(notFoundMiddleware); // For handling not found routes
 app.use(errorHandlerMiddleware()); // For handling errors
 
+// Routes
+app.use("/user", userRouter);
+
 // Connection
 connectDB(); // Connect to MongoDB
 connectServer(app); // Connect to Server
