@@ -1,9 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
-const notFoundMiddleware = () => {
-    return (res: Response) => {
-        res.status(400).json({ message: "Route doesn't exist" });
-    };
+const notFoundMiddleware = (req: Request, res: Response, next: NextFunction) => {
+    res.status(404).json({ message: "Route doesn't exist" });
 };
 
 export default notFoundMiddleware;

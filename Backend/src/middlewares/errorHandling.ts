@@ -2,7 +2,6 @@ import { Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import CustomError from '../interfaces/customError';
 
-
 const errorHandlerMiddleware = () => {
     return (error: CustomError, res: Response) => {
         const defaultError = {
