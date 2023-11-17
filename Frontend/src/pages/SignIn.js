@@ -32,7 +32,7 @@ const SignIn = () => {
       <section className="w-80 flex flex-col gap-3">
         <header className="mb-6 flex flex-col">
           <h2 className="text-lg font-bold text-gray-800">
-            Welcome to our event
+            Welcome to our event!
           </h2>
           <h3 className="text-gray-500">Login by Your Secure Account</h3>
         </header>
