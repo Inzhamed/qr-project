@@ -1,6 +1,6 @@
 import { useState } from "react";
 import GoogleLogo from "../assets/google";
-import FacebookLogo from "../assets/facebook";
+import { Link } from "react-router-dom";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({
@@ -41,13 +41,8 @@ const SignIn = () => {
             <span aria-hidden="true">
               <GoogleLogo />
             </span>
-            <span className="text-white font-bold ml-8">
+            <span className="text-white font-bold ml-10">
               Sign in with Google
-            </span>
-          </button>
-          <button className="rounded bg-gray-100">
-            <span aria-hidden="true">
-              <FacebookLogo />
             </span>
           </button>
         </div>
@@ -89,24 +84,24 @@ const SignIn = () => {
           <div className="flex justify-end">
             <a
               href="/"
-              className="text-blue-500 text-sm underline hover:opacity-80"
+              className="text-blue-600 text-sm underline hover:opacity-80"
             >
               Forgot password?
             </a>
           </div>
-          <button className="rounded bg-blue-500 text-white p-2" type="submit">
+          <button className="rounded bg-blue-600 text-white p-2" type="submit">
             Sign in
           </button>
           <div className="flex justify-center">
             <span className="text-gray-500 text-sm">
               Don't have an account?
             </span>
-            <a
-              href="/"
-              className="text-blue-500 text-sm ml-1 underline hover:opacity-80"
+            <Link
+              to="/signup"
+              className="text-blue-600 text-sm ml-1 hover:opacity-80 font-semibold"
             >
-              Create Account
-            </a>
+              Sign Up
+            </Link>
           </div>
         </form>
       </section>
