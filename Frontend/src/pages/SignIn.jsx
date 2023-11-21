@@ -1,13 +1,14 @@
 import { useState } from "react";
 import GoogleLogo from "../assets/google";
-import { Link } from "react-router-dom";
+import { Link, useHistory} from "react-router-dom";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
-  const [error, setError] = useState("");
+  const [loginError, setLoginError] = useState('');
+  const history = useHistory();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -17,13 +18,35 @@ const SignIn = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.email || !formData.password) {
-      setError("Please fill in all fields.");
+      setLoginError('Please fill in all fields.');
     } else {
-      console.log("Form submitted:", formData);
-      setError("");
+      try {
+        const response = await fetch('YOUR_BACKEND_LOGIN_ENDPOINT', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          // Assuming backend returns a token upon successful login
+          localStorage.setItem('token', data.token); // Store token in localStorage
+          setLoginError('');
+          console.log('User logged in:', data.user); // You might redirect or update UI here
+          history.push('/qrcode'); // Redirect to dashboard or user-specific page
+        } else {
+          setLoginError('Invalid credentials. Please try again.');
+        }
+      } catch (error) {
+        console.error('Login failed:', error);
+        setLoginError('Login failed. Please try again.');
+      }
     }
   };
 
@@ -80,7 +103,7 @@ const SignIn = () => {
             type="password"
             required
           />
-          {error && <div className="text-red-500 text-sm">{error}</div>}
+          {loginError && <div className="text-red-500 text-sm">{loginError}</div>}
           <div className="flex justify-end">
             <a
               href="/"

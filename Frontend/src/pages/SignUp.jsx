@@ -1,15 +1,15 @@
 import { useState } from "react";
 import GoogleLogo from "../assets/google";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     confirmPassword: "",
-    agreed: false,
   });
-  const [error, setError] = useState("");
+  const [signupError, setSignupError] = useState("");
+  const history = useHistory();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -19,21 +19,38 @@ const SignUp = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.email || !formData.password || !formData.confirmPassword) {
-      setError("Please fill in all fields.");
+      setSignupError("Please fill in all fields.");
     } else if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match.");
+      setSignupError("Passwords do not match.");
     } else {
-      // Simulate form submission (replace with actual logic)
-      console.log("Form submitted:", formData);
-      setError(""); // Clear error
-    }
-  };
+      try {
+        const response = await fetch('YOUR_BACKEND_SIGNUP_ENDPOINT', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
 
-  const handleAgreementChange = () => {
-    setFormData({ ...formData, agreed: !formData.agreed });
+        const data = await response.json();
+
+        if (response.ok) {
+          // Assuming backend returns a token upon successful signup
+          localStorage.setItem('token', data.token); // Store token in localStorage
+          setSignupError('');
+          console.log('User signed up:', data.user); // You might redirect or update UI here
+          history.push('/qrcode'); // Redirect to dashboard or user-specific page
+        } else {
+          setSignupError('Signup failed. Please try again.');
+        }
+      } catch (error) {
+        console.error('Signup failed:', error);
+        setSignupError('Signup failed. Please try again.');
+      }
+    }
   };
 
   return (
@@ -96,24 +113,7 @@ const SignUp = () => {
             type="password"
             required
           />
-          <div className="flex items-center">
-            <input
-              id="agreed"
-              name="agreed"
-              checked={formData.agreed}
-              onChange={handleAgreementChange}
-              className="rounded border border-gray-300 p-2"
-              type="checkbox"
-              required
-            />
-            <label htmlFor="agreed" className="ml-3 text-gray-600">
-              I agree to
-              <a href="/terms" className="text-blue-600">
-                &nbsp;terms & conditions
-              </a>
-            </label>
-          </div>
-          {error && <div className="text-red-500 text-sm">{error}</div>}
+          {signupError && <div className="text-red-500 text-sm">{signupError}</div>}
           <button
             className="rounded bg-blue-600 text-white p-2 mt-2"
             type="submit"
