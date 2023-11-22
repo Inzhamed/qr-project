@@ -1,6 +1,7 @@
 import { useState } from "react";
 import GoogleLogo from "../assets/google";
-import { Link, useHistory} from "react-router-dom";
+import { Link } from "react-router-dom";
+import Qrcode from "./Qrcode";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({
@@ -8,7 +9,7 @@ const SignIn = () => {
     password: '',
   });
   const [loginError, setLoginError] = useState('');
-  const history = useHistory();
+  const [logged, setLogged] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -24,7 +25,7 @@ const SignIn = () => {
       setLoginError('Please fill in all fields.');
     } else {
       try {
-        const response = await fetch('YOUR_BACKEND_LOGIN_ENDPOINT', {
+        const response = await fetch('LOGIN_ENDPOINT', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -35,11 +36,11 @@ const SignIn = () => {
         const data = await response.json();
 
         if (response.ok) {
-          // Assuming backend returns a token upon successful login
+          // backend returns a token upon successful login
           localStorage.setItem('token', data.token); // Store token in localStorage
           setLoginError('');
-          console.log('User logged in:', data.user); // You might redirect or update UI here
-          history.push('/qrcode'); // Redirect to dashboard or user-specific page
+          console.log('User logged in:', data.user);
+          setLogged(true);
         } else {
           setLoginError('Invalid credentials. Please try again.');
         }
@@ -49,8 +50,9 @@ const SignIn = () => {
       }
     }
   };
-
+  
   return (
+    logged?<Qrcode email={formData.email}/>:
     <div className="h-screen flex justify-center items-center">
       <section className="w-80 flex flex-col gap-3">
         <header className="mb-6 flex flex-col">
@@ -129,7 +131,8 @@ const SignIn = () => {
         </form>
       </section>
     </div>
-  );
-};
+    );
+  };
 
-export default SignIn;
+  export default SignIn;
+  
