@@ -1,6 +1,7 @@
 import { useState } from "react";
 import GoogleLogo from "../assets/google";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
+import Qrcode from "./Qrcode";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -9,7 +10,7 @@ const SignUp = () => {
     confirmPassword: "",
   });
   const [signupError, setSignupError] = useState("");
-  const history = useHistory();
+  const [logged, setLogged] = useState("false");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -38,11 +39,11 @@ const SignUp = () => {
         const data = await response.json();
 
         if (response.ok) {
-          // Assuming backend returns a token upon successful signup
+          // backend returns a token upon successful signup
           localStorage.setItem('token', data.token); // Store token in localStorage
           setSignupError('');
-          console.log('User signed up:', data.user); // You might redirect or update UI here
-          history.push('/qrcode'); // Redirect to dashboard or user-specific page
+          console.log('User signed up:', data.user); 
+          setLogged(true);
         } else {
           setSignupError('Signup failed. Please try again.');
         }
@@ -54,6 +55,7 @@ const SignUp = () => {
   };
 
   return (
+    logged? <Qrcode email={formData.email}/> :
     <div className="h-screen flex justify-center mt-14">
       <section className="w-80 flex flex-col gap-2">
         <div className="flex justify-end mb-6 w-80">
@@ -142,3 +144,4 @@ const SignUp = () => {
 };
 
 export default SignUp;
+
