@@ -10,7 +10,7 @@ const SignUp = () => {
     confirmPassword: "",
   });
   const [signupError, setSignupError] = useState("");
-  const [logged, setLogged] = useState("false");
+  const [logged, setLogged] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
