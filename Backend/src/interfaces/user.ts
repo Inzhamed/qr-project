@@ -3,5 +3,6 @@ interface IUser {
     email: string ;
     secret: string;
     qrcode: Buffer;
+    password: string;
 }
 export default IUser;

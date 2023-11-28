@@ -3,7 +3,7 @@ import "dotenv/config";
 
 // Connect MongoDB at mongoURL or default port 27017.
 export const connectDB = () => {
-    const mongodb_url = process.env.MONGODB_URL || "mongodb://localhost:27017";
+    const mongodb_url = process.env.MONGODB_URL || "mongodb://127.0.0.1:27017/qr";
     mongoose.connect(mongodb_url, {})
         .then(() => {
             console.log("MongoDB Connection Succeeded.");
