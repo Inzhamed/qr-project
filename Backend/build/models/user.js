@@ -27,8 +27,9 @@ const mongoose_1 = __importStar(require("mongoose"));
 const qrcode_1 = require("../logic/qrcode");
 const userSchema = new mongoose_1.Schema({
     fullName: { type: String, required: true },
-    email: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
     secret: { type: String, required: true, default: (0, qrcode_1.generateRandomString)(16) },
     qrcode: { type: Buffer, reed: true },
+    password: { type: String }
 });
 exports.default = mongoose_1.default.model("User", userSchema);

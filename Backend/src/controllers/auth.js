@@ -76,4 +76,14 @@ async function login(req,res) {
     }
 }
 
-module.exports = { signUp, login }
+async function logout (req,res) {
+    try {
+        res.clearCookie("token")
+        return res.status(200).json({ message: "logout successful" })
+    } catch(error) {
+        console.log(error.message)
+        return res.status(404).json({ error: error.message })
+    }
+}
+
+module.exports = { signUp, login, logout }

@@ -10,6 +10,7 @@ const config_1 = require("./config");
 const errorHandling_1 = __importDefault(require("./middlewares/errorHandling"));
 const notFound_1 = __importDefault(require("./middlewares/notFound"));
 const user_1 = __importDefault(require("./routes/user"));
+const userAuthGoogle = require("./routes/authRouteGoogle");
 const userAuth = require("./routes/authRoute");
 require("dotenv").config();
 const app = (0, express_1.default)();
@@ -18,9 +19,11 @@ app.use(express_1.default.json()); // To parse the incoming requests with JSON p
 app.use((0, cors_1.default)());
 app.use((0, morgan_1.default)("tiny"));
 //passport js
+const cookieParser = require("cookie-parser");
 const session = require('express-session');
 const passport = require("passport");
 const passportSetup = require("./controllers/config/passport");
+app.use(cookieParser());
 app.use(session({
     secret: "keyboard cat",
     resave: false,
@@ -29,8 +32,9 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 // Routes
+app.use("/admin", userAuth);
+app.use("/auth/google", userAuthGoogle);
 app.use("/user", user_1.default);
-app.use("/auth/google", userAuth);
 // Config
 app.use(notFound_1.default); // For handling not found routes
 app.use((0, errorHandling_1.default)()); // For handling errors
